@@ -5,6 +5,7 @@ import Home from './components/Home';
 import About from './components/About';
 import axios from 'axios';
 import ChatApp from './components/ChatApp';
+import AuthPage from './components/AuthPage';
 
 
 const App = () => {
@@ -15,6 +16,7 @@ const App = () => {
         <Route path='/' element={<Home />} />
         <Route path='/Home' element={<Home />} />
         <Route path='/About' element={<About />} />
+        <Route path='/AuthPage' element={<AuthPage />} /> 
       </Routes>
     </div>
   );

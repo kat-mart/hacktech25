@@ -1,0 +1,21 @@
+.title {
+font-size: 4rem;
+text-align: center;
+padding-top: 10%;
+color: white;
+margin-top: 20px;
+}
+
+.title-description {
+    font-size: 1.2rem;
+    text-align: center;
+    color: white;
+    margin-top: 10px;
+    }
+    
+start-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}

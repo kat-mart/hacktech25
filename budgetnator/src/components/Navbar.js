@@ -13,6 +13,9 @@ export default function Navbar() {
                 <li>
                     <Link to='/About'>About</Link>
                 </li>
+                <li>
+                    <Link to='/AuthPage'>Sign Up/In</Link>
+                </li>
             </ul>
         </nav>
     );

@@ -19,3 +19,8 @@ start-button {
     align-items: center;
     margin-top: 20px;
 }
+
+.input-container {
+    margin-top: 40%;
+    margin-bottom: 40%;
+}

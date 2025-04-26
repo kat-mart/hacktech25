@@ -10,8 +10,8 @@ CORS(app)  # allow all origins by default
 @app.route('/api/user-input', methods=['POST'])
 def receive_user_input():
    data = request.get_json()
-   result = data['Income'] + 1000
-   return jsonify({"response": result})
+   print(data)
+   return jsonify({"response": "Received!"})
 
 
 if __name__ == "__main__":

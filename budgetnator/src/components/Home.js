@@ -5,7 +5,8 @@ import axios from 'axios';
 export default function Home() {
    const [response, setResponse] = useState('');
    const [income, setIncome] = useState(null);
-   const [expenses, setExpenses] = useState([{ amount: '', category: '' }]);
+   const [expenses, setExpenses] = useState([{ amount: '', category: '', customCategory: '' }]);
+   const [goal, setGoal] = useState(null);
 
    const inputContainerRef = useRef(null); // Create a ref for the input container
 
@@ -16,12 +17,13 @@ export default function Home() {
    };
 
    const addExpense = () => {
-       setExpenses([...expenses, { amount: '', category: '' }]);
+       setExpenses([...expenses, { amount: '', category: '', customCategory: '' }]);
    };
 
    const sendUserInput = () => {
        axios.post('http://127.0.0.1:5000/api/user-input', {
            income: income,
+           goal: goal,
            expenses: expenses,
        })
        .then(res => {
@@ -42,10 +44,6 @@ export default function Home() {
 
    return (
        <div>
-           <h1 className="title">BUDGETNATOR</h1>
-           <h2 className="title-description">Insert description</h2>
-           <button className="start-button" onClick={scrollToInputContainer}>Get Started</button>
-
            {/* Input Container */}
            <div className="input-container" ref={inputContainerRef}>
                <div className="input-box">
@@ -55,10 +53,17 @@ export default function Home() {
                        value={income || ''}
                        onChange={e => setIncome(Number(e.target.value))}
                    />
+                   <label className="goal-label">Long-Term Goal: </label>
+                    <input
+                       type="number"
+                       value={goal || ''}
+                       onChange={e => setGoal(Number(e.target.value))}
+                   />
+
                    
                    {expenses.map((expense, index) => (
                        <div key={index} className="expense-input">
-                           <label className="amount-label">Amount: </label>
+                           <label className="amount-label">Expense: </label>
                            <input
                                type="number"
                                value={expense.amount}
@@ -74,7 +79,25 @@ export default function Home() {
                                <option value="transportation">Transportation</option>
                                <option value="entertainment">Entertainment</option>
                                <option value="utilities">Utilities</option>
+                               <option value="healthcare">Healthcare</option>
+                               <option value="housing">Housing</option>
+                               <option value="education">Education</option>
+                               <option value="clothing">Clothing</option>
+                               <option value="other">Other</option>
                            </select>
+
+                           {/* Show the custom category input if "Other" is selected */}
+                           {expense.category === 'other' && (
+                               <div>
+                                   <label className="custom-category-label">Custom Category: </label>
+                                   <input
+                                       type="text"
+                                       value={expense.customCategory}
+                                       onChange={e => handleExpenseChange(index, 'customCategory', e.target.value)}
+                                       placeholder="Enter custom category"
+                                   />
+                               </div>
+                           )}
                        </div>
                    ))}
 

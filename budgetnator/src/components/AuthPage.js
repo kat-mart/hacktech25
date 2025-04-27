@@ -1,10 +1,10 @@
 // AuthPage.jsx
 import './AuthPage.css'; // Import your CSS file for styling
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // import useNavigate
 import { signUp, signIn } from "./authFunctions";
 
-function AuthPage() {
+function AuthPage({ loggedIn, setLoggedIn }) {
   const navigate = useNavigate(); // initialize useNavigate
   const [isSigningUp, setIsSigningUp] = useState(true); // true = Sign Up form, false = Sign In form
   const [email, setEmail] = useState("");
@@ -16,8 +16,10 @@ function AuthPage() {
       if (isSigningUp) {
         await signUp(email, password);
         alert("User created successfully!");
+        setLoggedIn(true); // Update loggedIn state to true on successful sign up
       } else {
         await signIn(email, password);
+        setLoggedIn(true); // Update loggedIn state to true on successful sign in
         alert("Signed in successfully!");
       }
 

@@ -1,8 +1,18 @@
 import os
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify
 from flask_cors import CORS
+from flask import request
+import matplotlib
+matplotlib.use('Agg')  # <-- tell matplotlib to use a non-GUI backend
+import matplotlib.pyplot as plt
+import io
+import base64
 from google import generativeai as genai
 
+
+app = Flask(__name__)
+CORS(app)  # allow all origins by default
+CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
 app = Flask(__name__)
 
 # Allow all origins by default for general routes
@@ -23,21 +33,19 @@ genai.configure(api_key=API_KEY)
 
 @app.route('/api/user-input', methods=['POST'])
 def receive_user_input():
-    data = request.get_json()
-    total_expenses = 0
-    for expense in data['expenses']:
-        total_expenses += int(expense['amount'])
-
-    print(f"Total expenses: ${total_expenses}")
-    total_savings_goal = total_expenses * 5
-    income = data["income"]
-    past_month_left = (income/12) - total_expenses
-    past_week_left = past_month_left * 12 / 52
-    willing_to_save = 0.5
-    weekly_savings_goal = total_savings_goal / (willing_to_save * past_week_left)
-    print(weekly_savings_goal)
-
-    return jsonify(
+   data = request.get_json()
+   total_expenses =  0
+   for expense in data['expenses']:
+       total_expenses += int(expense['amount'])
+   print(f"Total expenses: ${total_expenses}")
+   total_savings_goal = total_expenses * 5
+   income = data["income"]
+   past_month_left = (income/12) - total_expenses
+   past_week_left = past_month_left * 12 / 52
+   willing_to_save = 0.5
+   weekly_savings_goal = total_savings_goal / (willing_to_save * past_week_left)
+   print(weekly_savings_goal)
+   return jsonify(
         {"weeklyGoal": round(weekly_savings_goal, 2), "totalGoal": round(total_savings_goal, 2)}
     )
 
@@ -67,7 +75,33 @@ def chat():
         return jsonify({'response': ai_response})
     except Exception as e:
         print(f"Error calling Gemini API: {str(e)}")
-        return jsonify({'response': f'Error: {str(e)}'}), 500
 
-if __name__ == "__main__":
+
+# pie chart endpoint
+@app.route('/api/generate_pie_chart', methods=['POST'])
+def generate_pie_chart():
+    data = request.get_json()  #
+    expenses = [expense["amount"] for expense in data["expenses"]]
+    categories = [expense["category"] for expense in data["expenses"]]
+
+    plt.figure(figsize=(8, 6))
+    plt.pie(expenses, labels=categories, autopct='%1.1f%%', startangle=90)
+    plt.title('Expense Breakdown')
+
+    # Save the plot to a buffer
+    img = io.BytesIO()
+    plt.savefig(img, format='png')
+    img.seek(0)
+
+    # Encode the image as base64 and add the correct data URL prefix
+    plot_base64 = base64.b64encode(img.getvalue()).decode()
+    plot_url = f"data:image/png;base64,{plot_base64}"
+
+    # Close the plot so it doesn't keep stacking up in memory
+    plt.close()
+
+    return jsonify({"plot_url": plot_url})
+
+
+if __name__ == '__main__':
     app.run(debug=True)

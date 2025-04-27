@@ -15,12 +15,10 @@ function ChatApp() {
     // Add user's message to chat
     const newMessages = [...messages, { sender: "You", text: userMessage }]
     setMessages(newMessages)
-    setUserMessage("") // Clear input field
-    setLoading(true) // Show loading state
+    setUserMessage("") 
+    setLoading(true) 
 
     try {
-      // Send user message to Flask backend
-      // Note: Flask runs on port 5000 by default
       const response = await fetch("http://localhost:5000/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

@@ -1,4 +1,9 @@
-/* Title Styles */
+body {
+    margin: 0;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    background-color: #121212; /* dark background */
+}
+
 .title {
     font-size: 4rem;
     text-align: center;
@@ -9,14 +14,28 @@
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
 
-.title-description {
-    font-size: 1.2rem;
+.description-container {
+    /* display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    /* background-image: url('https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1350&q=80');
+    background-size: cover;
+    background-position: center; */ 
+    width: 80%; /* or 60%, or a fixed size like 500px */
+    margin: 0 auto; /* center it */
+}
+
+.description {
+    font-size: 1.5rem;
     text-align: center;
     color: white;
-    margin-top: 10px;
+    margin-top: 20px;
+    padding: 0 20px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-style: italic;
+    line-height: 1.6;
 }
+
 
 /* Start Button */
 .start-button {
@@ -38,10 +57,4 @@
     background-color: rgba(255, 255, 255, 0.1);
     transform: scale(1.05);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-body {
-    margin: 0;
-    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    background-color: #f0f2f5;
 }

@@ -28,24 +28,6 @@ if not API_KEY:
 # Configure the generativeai library with the API key
 genai.configure(api_key=API_KEY)
 
-@app.route('/api/user-input', methods=['POST'])
-def receive_user_input():
-   data = request.get_json()
-   total_expenses =  0
-   for expense in data['expenses']:
-       total_expenses += int(expense['amount'])
-   print(f"Total expenses: ${total_expenses}")
-   total_savings_goal = total_expenses * 5
-   income = data["income"]
-   past_month_left = (income/12) - total_expenses
-   past_week_left = past_month_left * 12 / 52
-   willing_to_save = 0.5
-   weekly_savings_goal = total_savings_goal / (willing_to_save * past_week_left)
-   print(weekly_savings_goal)
-   return jsonify(
-        {"weeklyGoal": round(weekly_savings_goal, 2), "totalGoal": round(total_savings_goal, 2)}
-    )
-
 # Route to handle chat with Gemini AI
 @app.route('/chat', methods=['POST'])
 def chat():
@@ -98,6 +80,47 @@ def generate_pie_chart():
     plt.close()
 
     return jsonify({"plot_url": plot_url})
+
+# emergency fund endpoint
+@app.route('/api/emergency_fund', methods=['POST'])
+def calculate_emergency_fund():
+   data = request.get_json()
+   total_expenses =  0
+   for expense in data['expenses']:
+         total_expenses += int(expense['amount'])
+
+
+   print(f"Total expenses: ${total_expenses}")
+   total_savings_goal = total_expenses * 5
+   income = data["income"]
+   past_month_left = (income/12) - total_expenses
+   past_week_left = past_month_left * 12 / 52
+   willing_to_save = 0.5
+   weekly_savings_goal = total_savings_goal / (willing_to_save * past_week_left)
+   print(weekly_savings_goal)
+
+   return jsonify(
+      {"weeklyGoal": round(weekly_savings_goal, 2), "totalGoal": round(total_savings_goal, 2)}
+   )
+
+# personal goal endpoint
+@app.route('/api/personal-goal', methods=['POST'])
+def calculate_personal_goal():
+  data = request.get_json()
+  total_expenses =  0
+  for expense in data['expenses']:
+      total_expenses += int(expense['amount'])
+
+  print(f"Total expenses: ${total_expenses}")
+  total_savings_goal = total_expenses * 5
+  income = data["income"]
+  past_month_left = (income/12) - total_expenses
+  past_week_left = past_month_left * 12 / 52
+  willing_to_save = float(data["goalPercent"]) / 100
+  weekly_savings_goal = total_savings_goal / (willing_to_save * past_week_left)
+  print(weekly_savings_goal)
+
+  return jsonify({"weeklyGoal": round(weekly_savings_goal, 2), "totalGoal": round(total_savings_goal, 2)})
 
 
 if __name__ == '__main__':

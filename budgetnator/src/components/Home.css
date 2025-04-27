@@ -131,6 +131,7 @@ select {
     background-color: #fafafa;
     color: #333;
     transition: all 0.3s ease;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 input:focus,
@@ -160,4 +161,8 @@ body {
     margin: 0;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     background-color: #f0f2f5;
+}
+
+.input-text{
+    font-family: 'Courier New', Courier, monospace;
 }

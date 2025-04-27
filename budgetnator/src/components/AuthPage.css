@@ -40,3 +40,9 @@
 .entry-box2{
     font-family: 'Courier New', Courier, monospace;
 }
+
+.entry-box1:hover,
+.entry-box2:hover{        
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}

@@ -1,52 +1,91 @@
-import { useState } from 'react';
-import axios from 'axios';
+"use client"
+
+import { useState, useRef, useEffect } from "react"
+import "./ChatApp.css"
 
 function ChatApp() {
-  const [message, setMessage] = useState(''); // Holds the user's input
-  const [reply, setReply] = useState(''); // Holds the response from the backend
-  const [isLoading, setIsLoading] = useState(false); // Tracks loading state
+  const [userMessage, setUserMessage] = useState("")
+  const [messages, setMessages] = useState([])
+  const [loading, setLoading] = useState(false)
+  const messagesEndRef = useRef(null)
 
-  // Function to send message to backend
-  const sendMessage = async () => {
-    setIsLoading(true); // Set loading to true when sending message
+  const handleSendMessage = async () => {
+    if (!userMessage.trim()) return // Don't send empty messages
+
+    // Add user's message to chat
+    const newMessages = [...messages, { sender: "You", text: userMessage }]
+    setMessages(newMessages)
+    setUserMessage("") // Clear input field
+    setLoading(true) // Show loading state
 
     try {
-      // Send message to the backend
-      const response = await axios.post('http://localhost:5000/chat', { message });
+      // Send user message to Flask backend
+      // Note: Flask runs on port 5000 by default
+      const response = await fetch("http://localhost:5000/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: userMessage }),
+      })
 
-      // Handle successful response
-      setReply(response.data.reply); // Update reply state with response from backend
+      if (!response.ok) {
+        throw new Error(`Server responded with status: ${response.status}`)
+      }
+
+      const data = await response.json()
+
+      if (data.response) {
+        setMessages([...newMessages, { sender: "Budgetnator", text: data.response }])
+      } else {
+        setMessages([...newMessages, { sender: "Budgetnator", text: "Error: Could not get response from AI." }])
+      }
     } catch (error) {
-      // Handle error (e.g., show error message to user)
-      console.error('Error:', error.message);
+      console.error("Error:", error)
+      setMessages([
+        ...newMessages,
+        { sender: "Budgetnator", text: `Error: ${error.message || "Could not reach server."}` },
+      ])
     } finally {
-      setIsLoading(false); // Set loading to false after the request finishes (whether successful or not)
+      setLoading(false)
     }
-  };
+  }
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault()
+      handleSendMessage()
+    }
+  }
 
   return (
-    <div className="chat-box">
-      <h2>Chat with Us</h2>
-      <textarea 
-        value={message} 
-        onChange={e => setMessage(e.target.value)} 
-        placeholder="Type your message..." 
-      />
-      <button onClick={sendMessage} disabled={isLoading}>
-        {isLoading ? 'Sending...' : 'Send'}
-      </button>
-
-      {/* Displaying the reply */}
-      <div>
-        {reply && (
-          <div>
-            <h3>Reply:</h3>
-            <p>{reply}</p>
-          </div>
-        )}
+    <div className="app">
+      <h1>Chat with Gemini AI</h1>
+      <div className="chat-box">
+        <div className="messages">
+          {messages.length === 0 && <div className="empty-state">What kind of investment can I help you with?</div>}
+          {messages.map((msg, index) => (
+            <div key={index} className={`message ${msg.sender === "You" ? "user" : "ai"}`}>
+              <strong>{msg.sender}:</strong> {msg.text}
+            </div>
+          ))}
+          {loading && <div className="loading">✨Thinking...</div>}
+          <div ref={messagesEndRef} />
+        </div>
+        <div className="input-container">
+          <textarea className="input-texts"
+            value={userMessage}
+            onChange={(e) => setUserMessage(e.target.value)}
+            onKeyPress={handleKeyPress}
+            placeholder="Type a message..."
+            rows={2}
+            disabled={loading}
+          />
+          <button className="send-button" onClick={handleSendMessage} disabled={loading}>
+            {loading ? "..." : "Send"}
+          </button>
+        </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default ChatApp;
+export default ChatApp

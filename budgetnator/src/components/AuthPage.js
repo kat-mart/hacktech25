@@ -35,7 +35,7 @@ function AuthPage() {
 
   return (
     <div className='auth-box'>
-      <h2>{isSigningUp ? "Sign Up" : "Sign In"}</h2>
+      <h2>{isSigningUp ? "Create Your Account" : "Sign In"}</h2>
       <form onSubmit={handleSubmit}>
         <input className='entry-box1'
           type="email"

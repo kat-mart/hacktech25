@@ -14,6 +14,9 @@ export default function Navbar() {
                     <Link to='/About'>About</Link>
                 </li>
                 <li>
+                    <Link to='/ChatApp'>Gemini</Link>
+                </li>
+                <li>
                     <Link to='/AuthPage'>Sign Up/In</Link>
                 </li>
             </ul>

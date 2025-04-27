@@ -38,7 +38,7 @@ export default function Home() {
    const scrollToInputContainer = () => {
        inputContainerRef.current.scrollIntoView({
            behavior: 'smooth',
-           block: 'start', // Scrolls to the top of the section
+           block: 'start', 
        });
    };
 

@@ -1,4 +1,5 @@
 // AuthPage.jsx
+import './AuthPage.css'; // Import your CSS file for styling
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"; // import useNavigate
 import { signUp, signIn } from "./authFunctions";
@@ -33,29 +34,30 @@ function AuthPage() {
   };
 
   return (
-    <div>
+    <div className='auth-box'>
       <h2>{isSigningUp ? "Sign Up" : "Sign In"}</h2>
       <form onSubmit={handleSubmit}>
-        <input
+        <input className='entry-box1'
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <input
+        <input className='entry-box2'
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit">{isSigningUp ? "Sign Up" : "Sign In"}</button>
+
+        <button className='button-submit' type="submit">{isSigningUp ? "Sign Up" : "Sign In"}</button>
       </form>
 
       <p>
         {isSigningUp ? "Already have an account?" : "Don't have an account?"}
-        <button onClick={toggleMode} style={{ marginLeft: "8px" }}>
+        <button className='signIn-button' onClick={toggleMode}>
           {isSigningUp ? "Sign In" : "Sign Up"}
         </button>
       </p>

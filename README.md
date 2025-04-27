@@ -2,3 +2,4 @@
 npm install express cors dotenv openai
 npm install axios
 npm install dotenv
+npm install openai

@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import LandingPage from './components/LandingPage';
 import Home from './components/Home';
 import About from './components/About';
+import ChatApp from './components/ChatApp';  // Import ChatApp
 import axios from 'axios';
 import ChatApp from './components/ChatApp';
 import AuthPage from './components/AuthPage';

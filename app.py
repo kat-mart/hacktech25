@@ -11,9 +11,6 @@ from google import generativeai as genai
 
 
 app = Flask(__name__)
-CORS(app)  # allow all origins by default
-CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
-app = Flask(__name__)
 
 # Allow all origins by default for general routes
 CORS(app)

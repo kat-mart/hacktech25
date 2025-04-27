@@ -27,8 +27,8 @@ export default function Home() {
            expenses: expenses,
        })
        .then(res => {
-           setResponse(res.data.response);
-           console.log(res.data);
+           setResponse(res.data);
+           console.log('Response from server:', res.data);
        })
        .catch(error => {
            console.error('Error sending message:', error);
@@ -38,7 +38,7 @@ export default function Home() {
    const scrollToInputContainer = () => {
        inputContainerRef.current.scrollIntoView({
            behavior: 'smooth',
-           block: 'start', 
+           block: 'start', // Scrolls to the top of the section
        });
    };
 
@@ -105,7 +105,11 @@ export default function Home() {
                    <button className="add-button" onClick={addExpense}>Add Expense</button>
                    <button className="submit-button" onClick={sendUserInput}>Submit</button>
 
-                   {response && <p>{response}</p>}
+                   {response && (<>
+                    <p>Weekly Savings Goal: ${response.weeklyGoal}</p>
+                    <p>Total Savings Goal: ${response.totalGoal}</p>
+                    </>
+                )}
                </div>
            </div>
        </div>

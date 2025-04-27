@@ -22,10 +22,10 @@ export default function Navbar({ loggedIn, setLoggedIn }) {
             </div>
             <ul>
                 <li>
-                    <Link to='/Home'>Home</Link>
+                    <Link to='/Home'>Main</Link>
                 </li>
                 <li>
-                    <Link to='/About'>About</Link>
+                    <Link to='/Resources'>Resources</Link>
                 </li>
                 <li>
                     <Link to='/ChatApp'>Gemini</Link>

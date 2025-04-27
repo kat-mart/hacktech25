@@ -3,7 +3,7 @@ import { useState, useRef } from 'react';
 import axios from 'axios';
 
 export default function Home() {
-   const [response, setResponse] = useState('');
+   const [response, setResponse] = useState(null);
    const [income, setIncome] = useState(null);
    const [expenses, setExpenses] = useState([{ amount: '', category: '', customCategory: '' }]);
    const [goal, setGoal] = useState(null);
